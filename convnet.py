@@ -42,11 +42,12 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
 CHANGE HYPERPARAMETERS OF ALL LAYERS
 """
 # Convolutional neural network (two convolutional layers)
+# Note each image is 93 x 140 x 3
 class ConvNet(nn.Module):
     def __init__(self, num_classes=10):
         super(ConvNet, self).__init__()
         self.layer1 = nn.Sequential(
-            nn.Conv2d(1, 16, kernel_size=5, stride=1, padding=2),
+            nn.Conv2d(3, 16, kernel_size=5, stride=1, padding=2),
             nn.BatchNorm2d(16),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
