@@ -147,6 +147,6 @@ def load(city, state):
 
 
 if __name__ == '__main__':
-    load('New York City', 'NY')
+    load('Houston', 'TX')
     # loop = asyncio.get_event_loop()
     # loop.run_until_complete(load(loop, 'New York City', 'NY'))
