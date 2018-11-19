@@ -67,6 +67,7 @@ async def download_images(loop, city, state, dirname='images'):
                 tasks.append(save_image(url, fname, session))
             await asyncio.gather(*tasks)
 
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(download_images(loop, 'Houston', 'TX'))
-save_image_todo('New York City', 'NY')
+city_name, state_abbrev = 'Boston', 'MA'
+save_image_todo(city_name, state_abbrev)
+loop = asyncio.get_event_loop()
+loop.run_until_complete(download_images(loop, city_name, state_abbrev))
