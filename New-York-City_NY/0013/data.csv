@@ -1,0 +1,58 @@
+id,price,price_currency,manufacturer,beds,baths,lot_size,image_url
+e2e87410b53c4166a3443a59d0c0224c,400000,USD,Green Acre Homes,2,,4000,https://ap.rdcpix.com/1440884464/08cc67cc2a3dc94926ab5e777c357b6dl-m0xd-w480_h480_q80.jpg
+1f8075249e7841dfa4e9038706e7903d,999000,USD,Martino Realty,4,,4121,https://ap.rdcpix.com/1750788371/eb077d8c56540a9df78956b3807b809dl-m0xd-w480_h480_q80.jpg
+83f9ec653b49494388a178b862988325,659999,USD,Katz Realty,3,,2460,https://ap.rdcpix.com/859354056/14a71285a4df6746d0a676b60408f1ael-m0xd-w480_h480_q80.jpg
+3beb4cb6d6fb4efd931eab8edcaaa7f6,,,,,,,
+4c39c7b05ad64a819d94dd6418709c6c,,,,,,,
+753df7844b5e4e02890d3a86bcf98ce6,748000,USD,Cana Realty,3,,1800,https://ap.rdcpix.com/775101659/a019e76426bae95ec40065cdaf7ff01cl-m0xd-w480_h480_q80.jpg
+8539fc618a754031bedaee05f1fb518f,599999,USD,Re/Max Elite,3,,3000,https://ap.rdcpix.com/1222916360/3ac86fdc077dd1349dd17a4b52ccc571l-m0xd-w480_h480_q80.jpg
+75240b2d3c814ee98271e399fb565872,879000,USD,Herman & Co Real Estate,5,3,4326,https://ap.rdcpix.com/1167744930/0b1e046f5322195b39ec8055916fa528l-m0xd-w480_h480_q80.jpg
+4d1d9801c591451d9e98b1fa8ca111ce,390000,USD,"Robert Defalco Realty, Inc.",3,,3000,https://ap.rdcpix.com/379002103/72c64c7168a556470fbe820ec16289c1l-m0xd-w480_h480_q80.jpg
+a3f1deb44f5c4a4fa36a4a0a8918013b,725000,USD,Century 21 American Homes,3,,2521,https://ap.rdcpix.com/590206542/fd8777849a471443c1d434ef6f6f28e4o-c0s.jpg
+342cf2a01f114d3ba480c33b2cd6fc4c,380000,USD,Realty Trends Corp,3,2,3363,https://ap.rdcpix.com/139039366/de28e8f533e0917caf3552789247cf47l-m0xd-w480_h480_q80.jpg
+ce984123e822470d81080df041e09d05,379000,USD,Re/Max Elite,2,1,3850,https://ap.rdcpix.com/1416501286/e190536b21099c8643d99a6acf700f3al-m0xd-w480_h480_q80.jpg
+2512dfe6d1c44372bf9f3766be9674ac,819888,USD,SALMON REAL ESTATE,2,1,4000,https://ap.rdcpix.com/206823473/ef4dcc4bbd8fb0aef4de71d63777dae5l-m0xd-w480_h480_q80.jpg
+66bb875be5cd4d588a1eb12085d4c116,,,,,,,
+3ed5593af908414bb0e9dc3ed9139a0c,,,,,,,
+b8db5bf43ca74da99fc72d4d74a3bf00,1200000,USD,Katz Realty,4,,6615,https://ap.rdcpix.com/722344807/1a340815b1c699d2435216dc3e6ddabel-m0xd-w480_h480_q80.jpg
+07bc110396e549ea9268378ff7eeecca,399990,USD,First Class Realty Enterprises,5,1,2000,https://ap.rdcpix.com/921383443/d626d44a05ab3f0c2a6bd94214f94eddl-m0xd-w480_h480_q80.jpg
+771fefc8df65439198b9af8168b6979a,1198000,USD,Chase Global Realty Corp,4,,2250,https://ap.rdcpix.com/208331449/446f977167cd2c1bd491e9781a362f10l-m0xd-w480_h480_q80.jpg
+1559b0cca53c4a2f83be535b27f26baf,510000,USD,Exit Realty First Choice,4,3,4000,https://ap.rdcpix.com/1626681030/1636e48e3934698c0848720af9e4b975l-m0xd-w480_h480_q80.jpg
+0f25651fd3d44d8c99bd5247e9c2675d,748000,USD,TRACEY REAL ESTATE,3,2,6022,https://ap.rdcpix.com/419473931/e4857e216ae6bb87830cfc782349739el-m0xd-w480_h480_q80.jpg
+7ff4028e47fe437faefbe4cc4ac00e7a,499000,USD,Exit Realty Private Client,3,,3000,https://ap.rdcpix.com/1762258673/26b9f4b90ae0d97481295e1fba4924a8l-m0xd-w480_h480_q80.jpg
+d4563949875a4ceea2a3401dff0e9136,3500000,USD,"Trebach Realty, Inc.",4,4,,https://maps.googleapis.com/maps/api/streetview?channel=feps-streetview&client=gme-movesalesinc&size=640x480&location=4901%20Arlington%20Ave%2C%20Bronx%2C%20NY%2010471&signature=jdWqCuME90Iq_KcylyelmrwxJzw=&metadata=4M8jfNkzsIDHdRzYz0mPr2Qctck=
+2bc7b37c551f41bd835b9bc01a9d7852,2800000,USD,"Trebach Realty, Inc.",6,5,,https://maps.googleapis.com/maps/api/streetview?channel=feps-streetview&client=gme-movesalesinc&size=640x480&location=634%20W%20256th%20St%2C%20Bronx%2C%20NY%2010471&signature=afIj9DwUaLSQBNO3d1afw_LLxCI=&metadata=Niox68__UPbKWTGLKGppVkiQxnw=
+cd77435e0eac427692ff12d4582c45b7,675000,USD,"Trebach Realty, Inc.",3,3,,https://maps.googleapis.com/maps/api/streetview?channel=feps-streetview&client=gme-movesalesinc&size=640x480&location=6027%20Delafield%20Ave%2C%20Bronx%2C%20NY%2010471&signature=ap3BJN-SkwJwQTl2aaBRRQvu1Ms=&metadata=_CqRwM9irVrNcFa9X0poQNYcWRM=
+3c3dbcdb3c264b02b74bfac01caa5d60,679000,USD,SafariRealty,3,2,3025,https://p.rdcpix.com/v02/o13a60000-c0s.gif
+cc1e5c2991da494490871e74a210f266,559000,USD,Douglas Elliman - Franklin Square,4,2,4000,https://ap.rdcpix.com/2092459869/02bb8f079fd237fd4fb7e83fd00292f5o-c0s.jpg
+fd4e0080dd7049d6b3f957c4bf429d2e,,,,,,,
+8f65749318e749dc9168c773a41eeced,,,,,,,
+2717e2ade46e4588800ff2e221c87ec4,1749000,USD,"BEN BAY REALTY CO OF BAY RIDGE, LLC",,,1574,https://ap.rdcpix.com/611627685/afbb3c19f1e410cef0aa2702ebb499b9l-m0xd-w480_h480_q80.jpg
+8e3047db6f26454b966b6da127430348,1849000,USD,"BEN BAY REALTY CO OF BAY RIDGE, LLC",,,1574,https://ap.rdcpix.com/1400846711/f7a7f30d1d23bb600d7273f45899ff8el-m0xd-w480_h480_q80.jpg
+beb7cbe4e18b4728b56db34228ad8584,575000,USD,J Milo Real Estate,3,3,2050,https://ap.rdcpix.com/2093503083/2924241113741277a70c36a51d646d00l-m0xd-w480_h480_q80.jpg
+7b5b8cdeca2444a8a0c200505250640c,1088888,USD,Douglas Elliman - 774 Broadway,0,,,https://p.rdcpix.com/v01/o01c22200-c0s.gif
+6a0b9d1344874329a85b70e9ccbfcc28,795000,USD,Corcoran Group - Williamsburg,2,1,,https://ap.rdcpix.com/874951483/c9f13dcc8918f1dd49bdca7bb782c42ao-c0s.jpg
+042e4ce3475947f584bdf8a5cd75fca0,610000,USD,A P S Realty Llc,3,,3600,https://ap.rdcpix.com/760814047/bf6a82476949d24361fb1021f2399694l-m0xd-w480_h480_q80.jpg
+21665706db4248fb8f5f66d5ec0b4896,998000,USD,Tmt Realty Group Llc,3,,4000,https://ap.rdcpix.com/1293088328/d603751b9a2e11658bd0d42edd504b19l-m0xd-w480_h480_q80.jpg
+5567ea7bc8de4064b9bb7d967e411313,1888000,USD,Ny Collective Corp,4,,5000,https://ap.rdcpix.com/388469377/a9cdcc19959e0af39068c9108ffddb7fl-m0xd-w480_h480_q80.jpg
+8803d2c8821f4005bb66054dd3e64a7e,1188000,USD,Momentum Real Estate Llc,3,,3000,https://ap.rdcpix.com/1942975222/29e9118ef430f151e457f85b0a3795f2l-m0xd-w480_h480_q80.jpg
+e0799c94b14f4ffba3e58899920aee81,528500,USD,Kings Home Realty Advisory Grp,3,,2000,https://ap.rdcpix.com/558054681/a2cdd0c36dda4a1c088d8398f232db6fl-m0xd-w480_h480_q80.jpg
+279e98003cb342dfaa64fc91d2fbe7fd,699000,USD,Taft Corp,3,2,3158,https://ap.rdcpix.com/459123963/c6ef30ecd0c501145a7764ac4e9c4a11l-m0xd-w480_h480_q80.jpg
+6498becf6cdd4bc2a8679711416db3cc,,,,,,,
+1a70e1afce4e4f1ab9f8b1ff3a4964c1,,,,,,,
+f8006f9b32bf45929fe2ff8c283441d0,530000,USD,Taft Corp,3,,1767,https://ap.rdcpix.com/801418998/11548c9a8c2034a46fc0ecf2153e8e15l-m0xd-w480_h480_q80.jpg
+08539013be634df6823e629701c7d782,579000,USD,Haven Group,5,3,,https://maps.googleapis.com/maps/api/streetview?channel=feps-streetview&client=gme-movesalesinc&size=640x480&location=2387%20Walton%20Ave%2C%20Bronx%2C%20NY%2010468&signature=3GMPuhG_vTKVpA0-DItFygARTqY=&metadata=iUMIo2xIHb_LiJ_NKjlFBaloEVI=
+6101e01842fc4bde9edcc00c38d0057e,499000,USD,Gotham Properties R E Llc,3,,3000,https://ap.rdcpix.com/140863645/e4bfa603806ec0b0d401f25ddb3d579cl-m0xd-w480_h480_q80.jpg
+d179d18e304047c68e8497e78a7881d4,459000,USD,Keller Williams Realty/United Partners,3,,,https://ap.rdcpix.com/803415419/abdf061e3a056566492b0f42a0e306ecl-m0xd-w480_h480_q80.jpg
+82cb6d488ff4494aa34708c2113b2054,469000,USD,COMPASS REALTY CENTRAL INC.,3,,1978,https://ap.rdcpix.com/1048474278/a4b79875d4704d4a2b0302a7efb22ecel-m0xd-w480_h480_q80.jpg
+228a8592204b4d138e00ffe57f34f235,510000,USD,BESMATCH REAL ESTATE,3,2,2435,https://p.rdcpix.com/v09/of41f0100-c0s.gif
+05480f8b51c04646b3de4c882894c3a6,779900,USD,SafariRealty,5,,4000,https://p.rdcpix.com/v02/o13a60000-c0s.gif
+05b4aa98de504c1f991a187b115a68e7,599000,USD,Bah Realty Group Llc,3,,1657,https://ap.rdcpix.com/1139103930/4157f12ef3ee91f4bdd978b5af6edb44l-m0xd-w480_h480_q80.jpg
+dcdafd5bb83f414492cd749775ea2c4a,238888,USD,"HT Realty Services, Inc.",2,1,1120,https://ap.rdcpix.com/2095266968/7f841590685554932ada74a588a03982l-m0xd-w480_h480_q80.jpg
+e9c4a94dd1c2486a8b431e0ab77b186c,1750000,USD,NEUHAUS REALTY INC.,4,,,https://ap.rdcpix.com/1291296946/6063d588f67214edcd5e78fe449a37a2l-m0xd-w480_h480_q80.jpg
+316693b0c38347cdbba9b21876427014,868000,USD,Chous Realty Group Inc,5,2,3800,https://ap.rdcpix.com/1132181295/46ffe0a9e8cc81ad4067c5fe252c10d7l-m0xd-w480_h480_q80.jpg
+a3cc40cd58da48a08bf81f488a7294b9,999000,USD,B Square Realty Inc,4,1,4000,https://ap.rdcpix.com/1825037897/4e7641119bef8c225673123075df1b1fl-m0xd-w480_h480_q80.jpg
+5dc6d0207dfb409e8eaacc6ffdc84d5b,850000,USD,Hometime Estates Llc,3,3,4000,https://ap.rdcpix.com/1780773652/160437863b80c1001707949116a71429l-m0xd-w480_h480_q80.jpg
+1b60d8c8812d411490c7cee473237b2d,3495000,USD,Corcoran Group - East Side,3,3,,https://ap.rdcpix.com/874951483/c9f13dcc8918f1dd49bdca7bb782c42ao-c0s.jpg
+e4a5acaf48e6401c8b3c53da3df81857,1300000,USD,Keller Williams NYC,8,4,,https://ap.rdcpix.com/2084522689/67f90c5e373c2a59ece6d4f1d739d3f9l-m0xd-w480_h480_q80.jpg
+6c3921048c844025886340c7c3e07897,,,,,,,

@@ -124,6 +124,7 @@ test_loader = torch.utils.data.DataLoader(
 CHANGE HYPERPARAMETERS OF ALL LAYERS
 """
 # Convolutional neural network (two convolutional layers)
+# Note each image is 93 x 140 x 3
 class ConvNet(nn.Module):
     def __init__(self, num_out=num_classes, batch_size=None):
         super(ConvNet, self).__init__()
@@ -240,5 +241,8 @@ with torch.no_grad():
 print('Saving Model ...')
 # Save the model checkpoint
 torch.save(model.state_dict(), 'model.ckpt')
+<<<<<<< HEAD
 
 print('Task Complete ...')
+=======
+>>>>>>> 2889859944382192d5a1a2961f84321f611e8ca6
