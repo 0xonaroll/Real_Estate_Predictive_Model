@@ -15,10 +15,14 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 CHANGE HYPERPARAMETERS
 """
 # Hyper parameters
-num_epochs = 15
+num_epochs = 1
 num_classes = 1
-batch_size = 100
-learning_rate = 0.01
+batch_size = 1
+learning_rate = 0.001
+img_root = 'images'
+img_flist_train = 'flist/ny_train'
+img_flist_test = 'flist/ny_test'
+
 
 """
 GET DATA
@@ -104,21 +108,25 @@ class ImageFilelist(data.Dataset):
 print('Loading Data ...')
 
 train_loader = torch.utils.data.DataLoader(
-         ImageFilelist(root='Pasadena-Houses/thumbnails', flist="flist/train",
+         ImageFilelist(root= img_root, flist=img_flist_train,
              transform=transforms.Compose([
-                 transforms.ToTensor()
+                 transforms.ToTensor(),
+                 # transforms.RandomCrop(10)
          ])),
          batch_size=batch_size, shuffle=True,
          num_workers=1, pin_memory=True)
 
 test_loader = torch.utils.data.DataLoader(
-         ImageFilelist(root='Pasadena-Houses/thumbnails', flist="flist/test",
+         ImageFilelist(root=img_root, flist=img_flist_test,
              transform=transforms.Compose([
-                 transforms.ToTensor()
+                 transforms.ToTensor(),
+                 # transforms.RandomCrop(10)
          ])),
          batch_size=batch_size, shuffle=False,
          num_workers=1, pin_memory=True)
 
+
+print(train_loader)
 
 """
 CHANGE HYPERPARAMETERS OF ALL LAYERS
@@ -241,8 +249,6 @@ with torch.no_grad():
 print('Saving Model ...')
 # Save the model checkpoint
 torch.save(model.state_dict(), 'model.ckpt')
-<<<<<<< HEAD
 
 print('Task Complete ...')
-=======
->>>>>>> 2889859944382192d5a1a2961f84321f611e8ca6
+
