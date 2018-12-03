@@ -29,26 +29,27 @@ import numpy as np
 # # print(images)
 
 
+image_root = ''
+train_split = 0.8
+
+# median = 816700 # median house price in Pasadena, CA
+# mu = math.log(median)
+# sigma = 0.5 # arbitrary choice, but seems reasonable
+# num = 241 # number of house pictures
+# values = np.random.normal(loc = mu, scale = sigma, size = num)
+# prices = np.zeros(num)
+# for i in range(num):
+#     prices[i] = np.int(math.exp(values[i]))
+# # np.save('data/pasadena_prices', prices)
 
 
-median = 816700 # median house price in Pasadena, CA
-mu = math.log(median)
-sigma = 0.5 # arbitrary choice, but seems reasonable
-num = 241 # number of house pictures
-values = np.random.normal(loc = mu, scale = sigma, size = num)
-prices = np.zeros(num)
-for i in range(num):
-    prices[i] = np.int(math.exp(values[i]))
-# np.save('data/pasadena_prices', prices)
-
-
-files = os.listdir('Pasadena-Houses/thumbnails')
+files = os.listdir(image_root)
 
 res_train = ''
 res_test = ''
 
 for i in range(len(files) - 1):
-    if i < 49:
+    if i < train_split * len(files):
         res_test = res_test + str(files[i]) + " " + str(prices[i])[:-2] + "\n"
     else:
         res_train = res_train + str(files[i]) + " " + str(prices[i])[:-2] + "\n"

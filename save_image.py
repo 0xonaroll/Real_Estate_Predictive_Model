@@ -47,6 +47,7 @@ def save_image_todo(city, state):
 
 async def save_image(image_url, filename, session):
     async with session.get(image_url) as resp:
+        image_url = image_url.replace('https', 'http')
         if resp.status == 200:
             f = await aiofiles.open(filename, mode='wb')
             await f.write(await resp.read())
@@ -67,7 +68,7 @@ async def download_images(loop, city, state, dirname='images'):
                 tasks.append(save_image(url, fname, session))
             await asyncio.gather(*tasks)
 
-city_name, state_abbrev = 'Boston', 'MA'
+city_name, state_abbrev = 'Miami', 'FL'
 save_image_todo(city_name, state_abbrev)
 loop = asyncio.get_event_loop()
 loop.run_until_complete(download_images(loop, city_name, state_abbrev))

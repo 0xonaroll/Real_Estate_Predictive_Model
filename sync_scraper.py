@@ -12,9 +12,9 @@ from selenium.webdriver.remote.remote_connection import LOGGER
 LOGGER.setLevel(logging.ERROR)
 
 import asyncio
-import aiohttp        
+# import aiohttp
 import aiofiles
-from arsenic import get_session, keys, browsers, services
+# from arsenic import get_session, keys, browsers, services
 
 realtor_base = 'https://www.realtor.com/'
 
@@ -147,6 +147,6 @@ def load(city, state):
 
 
 if __name__ == '__main__':
-    load('Houston', 'TX')
+    load('Miami', 'FL')
     # loop = asyncio.get_event_loop()
     # loop.run_until_complete(load(loop, 'New York City', 'NY'))
