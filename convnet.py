@@ -251,4 +251,3 @@ print('Saving Model ...')
 torch.save(model.state_dict(), 'model.ckpt')
 
 print('Task Complete ...')
-
