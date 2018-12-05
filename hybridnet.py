@@ -267,4 +267,3 @@ print('len X', len(X))
 
 plt.plot(X, losses, linewidth=1.0)
 plt.show()
-
