@@ -7,6 +7,7 @@ import numpy as np
 from PIL import Image
 import os
 import os.path
+import matplotlib.pyplot as plt
 
 # Device configuration
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -181,6 +182,9 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 print('Training Model ...')
 # Train the model
 total_step = len(train_loader)
+sum_loss = 0
+step_ct = 0
+losses = []
 for epoch in range(num_epochs):
     for i, (images, labels) in enumerate(train_loader):
 
@@ -206,9 +210,15 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
 
+        sum_loss += loss.item()
+        step_ct += 1
+        avg_loss = sum_loss/step_ct
+        losses.append(avg_loss)
+
+
         if (i + 1) % 1 == 0:
             print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
-                  .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
+                  .format(epoch + 1, num_epochs, i + 1, total_step, avg_loss))
 
 
 print('Evaluating Model ...')
@@ -252,3 +262,9 @@ torch.save(model.state_dict(), 'model.ckpt')
 
 print('Task Complete ...')
 
+
+X = list(range(1, len(losses) + 1))
+print('len X', len(X))
+
+plt.plot(X, losses, linewidth=1.0)
+plt.show()
