@@ -17,9 +17,9 @@ CHANGE HYPERPARAMETERS
 """
 # Hyper parameters
 import sys
-num_epochs = 1
+num_epochs = 100
 num_classes = 1
-batch_size = 1
+batch_size = 50
 learning_rate = 0.001
 img_root = 'nimages'
 img_flist_train = 'flist/train'
