@@ -24,7 +24,7 @@ def save_image_todo(city, state):
     for pg in os.listdir(basedir):
         pgdir = os.path.join(basedir, pg)
         pgcsv = os.path.join(pgdir, 'data.csv')
-        with open(pgcsv, 'r') as f:
+        with open(pgcsv, 'r', encoding='cp1252') as f:
             reader = csv.DictReader(f)
             for row in reader:
                 id = row['id']
@@ -68,7 +68,7 @@ async def download_images(loop, city, state, dirname='images'):
                 tasks.append(save_image(url, fname, session))
             await asyncio.gather(*tasks)
 
-city_name, state_abbrev = 'Miami', 'FL'
+city_name, state_abbrev = 'Seattle', 'WA'
 save_image_todo(city_name, state_abbrev)
 loop = asyncio.get_event_loop()
 loop.run_until_complete(download_images(loop, city_name, state_abbrev))

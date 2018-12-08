@@ -8,6 +8,7 @@ from PIL import Image
 import os
 import os.path
 import matplotlib.pyplot as plt
+import sys
 
 # Device configuration
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -16,20 +17,23 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 CHANGE HYPERPARAMETERS
 """
 # Hyper parameters
+
 import sys
 num_epochs = 100
 num_classes = 1
 batch_size = 50
 learning_rate = 0.001
-img_root = 'nimages'
-img_flist_train = 'flist/train'
-img_flist_test = 'flist/test'
+img_root = '../data/images'
+img_flist_train = '../data/flist/train'
+img_flist_test = '../data/flist/test'
+
 
 if len(sys.argv) > 1:
     num_epochs = int(sys.argv[1])
 
 if len(sys.argv) > 2:
     batch_size = int(sys.argv[2])
+
 
 
 """
@@ -134,7 +138,7 @@ test_loader = torch.utils.data.DataLoader(
          num_workers=1, pin_memory=True)
 
 
-print(train_loader)
+# print(train_loader)
 
 """
 CHANGE HYPERPARAMETERS OF ALL LAYERS
