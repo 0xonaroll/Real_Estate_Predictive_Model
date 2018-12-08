@@ -16,13 +16,13 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 CHANGE HYPERPARAMETERS
 """
 # Hyper parameters
-num_epochs = 1
+num_epochs = 100
 num_classes = 1
-batch_size = 1
+batch_size = 100
 learning_rate = 0.001
-img_root = 'images'
-img_flist_train = 'flist/ny_train'
-img_flist_test = 'flist/ny_test'
+img_root = '../data/images'
+img_flist_train = '../data/flist/train'
+img_flist_test = '../data/flist/test'
 
 
 """
@@ -127,7 +127,7 @@ test_loader = torch.utils.data.DataLoader(
          num_workers=1, pin_memory=True)
 
 
-print(train_loader)
+# print(train_loader)
 
 """
 CHANGE HYPERPARAMETERS OF ALL LAYERS
