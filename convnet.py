@@ -41,7 +41,7 @@ if len(sys.argv) > 1:
 if len(sys.argv) > 2:
     batch_size = int(sys.argv[2])
 
-if len(sys.argv) > 3:
+if len(sys.argv) > 3 and len(ckpt_file) == 0:
     ckpt_file = str(sys.argv[3])
     train_log = '{}/{}_train_log.txt'.format(output_dir, ckpt_file)
     test_log = '{}/{}_test_log.txt'.format(output_dir, ckpt_file)
