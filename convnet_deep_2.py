@@ -240,13 +240,39 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 
 def test(ep, file_log):
+    # print('testing')
     print('Evaluating Model ...', file = open(test_log, 'a+'))
-
     # Test the model
     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
     with torch.no_grad():
         # correct = 0
         # total = 0
+        total_step = 0
+        total_ct = 0
+        for images, labels in train_loader:
+            images = images.to(device).type(torch.FloatTensor)
+            labels = labels.to(device).type(torch.FloatTensor)
+            """
+            CHANGE TO MSE CALC
+            """
+            outputs = model(images)
+            # _, predicted = torch.max(outputs.data, 1)
+            predicted = outputs.data
+            # total += labels.size(0)
+            # correct += (predicted == labels).sum().item()
+            loss = criterion(outputs, labels)
+            # loss.backward()
+
+            step_loss = loss.item()
+            step_ct = len(images)
+            total_step += step_loss
+            total_ct += step_ct
+
+
+            print('Train Set Epoch {} Step Loss: {}'.format(str(ep), step_loss), file = open(file_log, 'a+'))
+
+        print('Train Set Epoch {} Total Loss on {} images: {}'.format(str(ep), total_ct, total_step), file = open(file_log, 'a+'))
+
         total_step = 0
         total_ct = 0
         for images, labels in test_loader:
@@ -269,11 +295,12 @@ def test(ep, file_log):
             total_ct += step_ct
 
 
-            print('Epoch {} Step Loss: {}'.format(str(ep), step_loss), file = open(file_log, 'a+'))
+            print('Test Set Epoch {} Step Loss: {}'.format(str(ep), step_loss), file = open(file_log, 'a+'))
 
-        print('Epoch {} Total Loss on {} images: {}'.format(str(ep), total_ct, total_step), file = open(file_log, 'a+'))
-
+        print('Test Set Epoch {} Total Loss on {} images: {}'.format(str(ep), total_ct, total_step), file = open(file_log, 'a+'))
     model.train()
+
+
 
 def save(ep, file_log):
     print('Epoch {} Saving Model ...'.format(ep), file = open(file_log, 'a+'))

@@ -276,7 +276,6 @@ def test(ep, file_log):
             print('Test Set Epoch {} Step Loss: {}'.format(str(ep), step_loss), file = open(file_log, 'a+'))
 
         print('Test Set Epoch {} Total Loss on {} images: {}'.format(str(ep), total_ct, total_step), file = open(file_log, 'a+'))
-    print('done testing')
     model.train()
 
 def save(ep, file_log):
