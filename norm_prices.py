@@ -15,4 +15,9 @@ for fnend in fnames:
     df['gauss_norm_price'] = (df['price'] - df['price'].mean()) / df['price'].std()
     df['log_price'] = np.log(df['price'])
     df['gauss_log_price'] = (df['log_price'] - df['log_price'].mean()) / df['log_price'].std()
-    df.to_csv(fname)
+    df = df.sort_values(by=['price'])
+    df['bucket_price'] = np.zeros((len(df),), dtype=np.float64)
+    for i in range(len(df)):
+        df.iat[i, 'bucket_price'] = np.float64((7 * i) // len(df))
+    df['bucket_price'] = (df['bucket_price'] - df['bucket_price'].mean()) / df['bucket_price'].std()
+    df.to_csv(fname, index=False)
