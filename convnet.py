@@ -18,15 +18,15 @@ CHANGE HYPERPARAMETERS
 """
 # Hyper parameters
 
-num_epochs = 100
+num_epochs = 2
 num_classes = 1
 batch_size = 50
 learning_rate = 0.001
 print_step_train = 1
-print_test_model = 10
+print_test_model = 1
 img_root = '../data/images'
-img_flist_train = '../data/flist/train'
-img_flist_test = '../data/flist/test'
+img_flist_train = '../data/flist/train_median'
+img_flist_test = '../data/flist/test_median'
 ckpt_file = ''
 output_dir = '../data/results'
 train_log = 'train_log.txt'
@@ -220,6 +220,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 
 def test(ep, file_log):
+    print('testing')
     print('Evaluating Model ...', file = open(test_log, 'a+'))
     # Test the model
     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
@@ -251,18 +252,19 @@ def test(ep, file_log):
             print('Epoch {} Step Loss: {}'.format(str(ep), step_loss), file = open(file_log, 'a+'))
 
         print('Epoch {} Total Loss on {} images: {}'.format(str(ep), total_ct, total_step), file = open(file_log, 'a+'))
-
+    print('done testing')
     model.train()
 
 def save(ep, file_log):
+    print('saving')
     print('Epoch {} Saving Model ...'.format(ep), file = open(file_log, 'a+'))
     # Save the model checkpoint
     if len(ckpt_file) > 0:
         torch.save(model.state_dict(), '{}/{}_model_{}.ckpt'.format(output_dir, ckpt_file, str(ep)))
     else:
         torch.save(model.state_dict(), '{}/{}_model_{}.ckpt'.format(output_dir, ckpt_file, str(ep)))
-
-
+    print('done saving')
+    
 
 
 print('Training Model ...', file = open(train_log, 'a+'))
@@ -273,6 +275,8 @@ step_ct = 0
 losses = []
 for epoch in range(num_epochs):
     for i, (images, labels) in enumerate(train_loader):
+
+        print(num_epochs, len(train_loader), epoch, i)
 
         # print("STEP INFO: ", epoch, i, images.shape, labels.shape, len(train_loader))
 
