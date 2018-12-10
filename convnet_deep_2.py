@@ -178,15 +178,15 @@ class ConvNet(nn.Module):
             nn.BatchNorm2d(128),
             nn.ReLU())
         self.layer4 = nn.Sequential(
-            nn.Conv2d(128, 128, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(128),
+            nn.Conv2d(128, 256, kernel_size=5, stride=1, padding=2),
+            nn.BatchNorm2d(256),
             nn.ReLU())
         self.layer5 = nn.Sequential(
-            nn.Conv2d(128, 128, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(128),
+            nn.Conv2d(256, 256, kernel_size=5, stride=1, padding=2),
+            nn.BatchNorm2d(256),
             nn.ReLU())
         self.layer6 = nn.Sequential(
-            nn.Conv2d(128, 128, kernel_size=5, stride=1, padding=2),
+            nn.Conv2d(256, 128, kernel_size=5, stride=1, padding=2),
             nn.BatchNorm2d(128),
             nn.ReLU())
         self.layer7 = nn.Sequential(
