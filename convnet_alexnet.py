@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.utils.data as data
 import torchvision
 import torchvision.transforms as transforms
+from torchvision.models import alexnet, resnet
 import numpy as np
 from PIL import Image
 import os
@@ -32,6 +33,7 @@ output_dir = '../data/results'
 train_log = 'train_log.txt'
 test_log = 'test_log.txt'
 
+
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
@@ -53,6 +55,7 @@ if len(sys.argv) > 3 and len(ckpt_file) == 0:
 GET DATA
 """
 print('Loading Data ...', file = open(train_log, 'a+'))
+print('### Loading Data')
 
 # MNIST dataset
 # train_dataset = torchvision.datasets.MNIST(root='../../data/',
@@ -90,50 +93,25 @@ def default_flist_reader(flist):
 
     return imlist
 
-def hybrid_flist_reader(flist):
-    """
-    flist format: impath label\nimpath label\n ...(same to caffe's filelist)
-    """
-    imlist = []
-    with open(flist, 'r') as rf:
-        for line in rf.readlines():
-            args = list(line.strip().split())
-            impath, label, params = args[0], args[1], args[2:]
-            params_arg = tuple()
-            for p in params:
-                params_arg = params_arg + (p,)
-            imlist.append((impath, float(label), params_arg))
-
-    return imlist
-
 
 class ImageFilelist(data.Dataset):
-    def __init__(self, root, flist, transform=None, target_transform=None, params_transform=None,
-                 flist_reader=default_flist_reader, loader=default_loader, mode='default'):
+    def __init__(self, root, flist, transform=None, target_transform=None,
+                 flist_reader=default_flist_reader, loader=default_loader):
         self.root = root
         self.imlist = flist_reader(flist)
         self.transform = transform
         self.target_transform = target_transform
-        self.params_transform = params_transform
         self.loader = loader
-        self.mode = mode
 
     def __getitem__(self, index):
-        if self.mode == 'default':
-            impath, target = self.imlist[index]
-        elif self.mode == 'hybrid':
-            impath, target, params = self.imlist[index]
-
+        impath, target = self.imlist[index]
         img = self.loader(os.path.join(self.root, impath))
         if self.transform is not None:
             img = self.transform(img)
         if self.target_transform is not None:
             target = self.target_transform(target)
 
-        if self.mode == 'default':
-            return img, target
-        elif self.mode == 'hybrid':
-            return img, target, list(params)
+        return img, target
 
     def __len__(self):
         return len(self.imlist)
@@ -183,105 +161,50 @@ test_loader = torch.utils.data.DataLoader(
 """
 CHANGE HYPERPARAMETERS OF ALL LAYERS
 """
-# Convolutional neural network (two convolutional layers)
-# Note each image is 93 x 140 x 3
-class HybridNet(nn.Module):
-    def __init__(self, num_params, num_out=num_classes, batch_size=None):
-        super(HybridNet, self).__init__()
-        self.conv_layer1 = nn.Sequential(
-            nn.Conv2d(3, 32, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(32),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=4))
-        self.conv_layer2 = nn.Sequential(
-            nn.Conv2d(32, 64, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(64),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2))
-        self.conv_layer3 = nn.Sequential(
-            nn.Conv2d(64, 64, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(64),
-            nn.ReLU())
-        self.conv_layer4 = nn.Sequential(
-            nn.Conv2d(64, 32, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(32),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.AdaptiveAvgPool2d((1, 7 * 7)))
-        self.conv_fc = nn.Linear(7 * 7 * 32, 32)
+# # Convolutional neural network (two convolutional layers)
+class AlexNet(nn.Module):
 
-        self.dnn_layer1 = nn.Linear(num_params, 16)
-        self.dnn_layer2 = nn.Linear(16, 32)
-        self.dnn_layer3 = nn.Linear(32, 64)
-        self.dnn_layer4 = nn.Linear(64, 32)
+    def __init__(self, num_classes=1):
+        super(AlexNet, self).__init__()
+        self.features = nn.Sequential(
+            nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2),
+            nn.Conv2d(64, 192, kernel_size=5, padding=2),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2),
+            nn.Conv2d(192, 384, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(384, 256, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(256, 256, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2),
+        )
+        self.classifier = nn.Sequential(
+            nn.Dropout(),
+            nn.Linear(256 * 5 * 6, 4096),
+            nn.ReLU(inplace=True),
+            nn.Dropout(),
+            nn.Linear(4096, 4096),
+            nn.ReLU(inplace=True),
+            nn.Linear(4096, num_classes),
+        )
 
-        self.hybrid_layer1 = nn.Linear(64, 128)
-        self.hybrid_layer2 = nn.Linear(128, 64)
-        self.hybrid_layer3 = nn.Linear(64, num_out)
-
-    def forward(self, im, pm):
-        im = self.layer1(im)
-        im = self.layer2(im)
-        im = self.layer3(im)
-        im = self.layer4(im)
-        im = im.reshape(im.size(0), -1)
-        im = self.fc(im)
-
-        out = torch.cat((im, pm), 0)
-
-        out = self.hybrid_layer1(out)
-        out = self.hybrid_layer2(out)
-        out = self.hybrid_layer3(out)
-
-        out = out.view(out.shape[0])
-        return out
-
-
-
-
-
-
-
-
-# class ConvNet(nn.Module):
-#     def __init__(self, num_out=num_classes, batch_size=None):
-#         super(ConvNet, self).__init__()
-#         self.layer1 = nn.Sequential(
-#             nn.Conv2d(3, 32, kernel_size=5, stride=1, padding=2),
-#             nn.BatchNorm2d(32),
-#             nn.ReLU(),
-#             nn.MaxPool2d(kernel_size=2, stride=4))
-#         self.layer2 = nn.Sequential(
-#             nn.Conv2d(32, 64, kernel_size=5, stride=1, padding=2),
-#             nn.BatchNorm2d(64),
-#             nn.ReLU(),
-#             nn.MaxPool2d(kernel_size=2, stride=2))
-#         self.layer3 = nn.Sequential(
-#             nn.Conv2d(64, 64, kernel_size=5, stride=1, padding=2),
-#             nn.BatchNorm2d(64),
-#             nn.ReLU())
-#         self.layer4 = nn.Sequential(
-#             nn.Conv2d(64, 32, kernel_size=5, stride=1, padding=2),
-#             nn.BatchNorm2d(32),
-#             nn.ReLU(),
-#             nn.MaxPool2d(kernel_size=2, stride=2),
-#             nn.AdaptiveAvgPool2d((1, 7 * 7)))
-#         self.fc = nn.Linear(7 * 7 * 32, num_out)
-#
-#     def forward(self, x):
-#         out = self.layer1(x)
-#         out = self.layer2(out)
-#         out = self.layer3(out)
-#         out = self.layer4(out)
-#         out = out.reshape(out.size(0), -1)
-#         out = self.fc(out)
-#         out = out.view(out.shape[0])
-#         return out
+    def forward(self, x):
+        x = self.features(x)
+        print('### SHAPE: ', x.shape)
+        # x = x.view(x.size(0) * x.size(1) * x.size(2) * x.size(3))
+        x = x.view(x.size(0), 256 * 5 * 6)
+        x = self.classifier(x)
+        x = x.view(x.size(0))
+        return x
 
 
 print('Initializing Model ...', file = open(train_log, 'a+'))
-model = ConvNet(num_classes).to(device)
-
+print('### Initializing Model')
+# model = ConvNet(num_classes).to(device)
+model = AlexNet(num_classes).to(device)
 
 class RMSELoss(nn.Module):
     def __init__(self):
@@ -293,6 +216,7 @@ class RMSELoss(nn.Module):
 
 
 print('Configuring Model ...', file = open(train_log, 'a+'))
+print('### Configuring Model')
 # criterion and optimizer
 # criterion = RMSELoss()
 
@@ -304,6 +228,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 def test(ep, file_log):
     print('Evaluating Model ...', file = open(test_log, 'a+'))
+    print('### Test Epoch', ep)
     # Test the model
     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
     with torch.no_grad():
@@ -311,15 +236,13 @@ def test(ep, file_log):
         # total = 0
         total_step = 0
         total_ct = 0
-        for images, labels, params in test_loader:
+        for images, labels in test_loader:
             images = images.to(device).type(torch.FloatTensor)
             labels = labels.to(device).type(torch.FloatTensor)
-            params = params.to(device).type(torch.FloatTensor)
-
             """
             CHANGE TO MSE CALC
             """
-            outputs = model(images, params)
+            outputs = model(images)
             # _, predicted = torch.max(outputs.data, 1)
             predicted = outputs.data
             # total += labels.size(0)
@@ -341,6 +264,7 @@ def test(ep, file_log):
 
 def save(ep, file_log):
     print('Epoch {} Saving Model ...'.format(ep), file = open(file_log, 'a+'))
+    print('### Save Epoch', ep)
     # Save the model checkpoint
     if len(ckpt_file) > 0:
         torch.save(model.state_dict(), '{}/{}_model_{}.ckpt'.format(output_dir, ckpt_file, str(ep)))
@@ -351,26 +275,27 @@ def save(ep, file_log):
 
 
 print('Training Model ...', file = open(train_log, 'a+'))
+print('### Training Model')
 # Train the model
 total_step = len(train_loader)
 sum_loss = 0
 step_ct = 0
 losses = []
 for epoch in range(num_epochs):
-    for i, (images, labels, params) in enumerate(train_loader):
+    for i, (images, labels) in enumerate(train_loader):
 
+        print('### Train Epoch', epoch, '/', len(train_loader), i)
         # print("STEP INFO: ", epoch, i, images.shape, labels.shape, len(train_loader))
 
         # print('load')
         images = images.to(device).type(torch.FloatTensor)
         labels = labels.to(device).type(torch.FloatTensor)
-        params = params.to(device).type(torch.FloatTensor)
 
         # print(images.shape, labels.shape)
 
         # print('forward pass')
         # Forward pass
-        outputs = model(images, params)
+        outputs = model(images)
         # print("OUTPUTS: ", outputs)
         # print("LABLES: ", labels)
         loss = criterion(outputs, labels)
@@ -409,6 +334,7 @@ for epoch in range(num_epochs):
 
 
 print('Task Complete ...', file = open(train_log, 'a+'))
+print('### DONE')
 #
 # X = list(range(1, len(losses) + 1))
 # print('len X', len(X))
