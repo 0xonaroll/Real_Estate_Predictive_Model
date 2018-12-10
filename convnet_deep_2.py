@@ -174,10 +174,26 @@ class ConvNet(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
         self.layer3 = nn.Sequential(
-            nn.Conv2d(64, 64, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(64),
+            nn.Conv2d(64, 128, kernel_size=5, stride=1, padding=2),
+            nn.BatchNorm2d(128),
             nn.ReLU())
         self.layer4 = nn.Sequential(
+            nn.Conv2d(128, 256, kernel_size=5, stride=1, padding=2),
+            nn.BatchNorm2d(256),
+            nn.ReLU())
+        self.layer5 = nn.Sequential(
+            nn.Conv2d(256, 256, kernel_size=5, stride=1, padding=2),
+            nn.BatchNorm2d(256),
+            nn.ReLU())
+        self.layer6 = nn.Sequential(
+            nn.Conv2d(256, 128, kernel_size=5, stride=1, padding=2),
+            nn.BatchNorm2d(128),
+            nn.ReLU())
+        self.layer7 = nn.Sequential(
+            nn.Conv2d(128, 64, kernel_size=5, stride=1, padding=2),
+            nn.BatchNorm2d(64),
+            nn.ReLU())
+        self.layer8 = nn.Sequential(
             nn.Conv2d(64, 32, kernel_size=5, stride=1, padding=2),
             nn.BatchNorm2d(32),
             nn.ReLU(),
@@ -190,6 +206,10 @@ class ConvNet(nn.Module):
         out = self.layer2(out)
         out = self.layer3(out)
         out = self.layer4(out)
+        out = self.layer5(out)
+        out = self.layer6(out)
+        out = self.layer7(out)
+        out = self.layer8(out)
         out = out.reshape(out.size(0), -1)
         out = self.fc(out)
         out = out.view(out.shape[0])
@@ -221,6 +241,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 def test(ep, file_log):
     print('Evaluating Model ...', file = open(test_log, 'a+'))
+
     # Test the model
     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
     with torch.no_grad():
@@ -256,6 +277,7 @@ def test(ep, file_log):
 
 def save(ep, file_log):
     print('Epoch {} Saving Model ...'.format(ep), file = open(file_log, 'a+'))
+
     # Save the model checkpoint
     if len(ckpt_file) > 0:
         torch.save(model.state_dict(), '{}/{}_model_{}.ckpt'.format(output_dir, ckpt_file, str(ep)))
@@ -321,7 +343,6 @@ for epoch in range(num_epochs):
     # print('Test Accuracy of the model on the 10000 test images: {} %'.format(100 * correct / total))
 
 
-
 print('Task Complete ...', file = open(train_log, 'a+'))
 #
 # X = list(range(1, len(losses) + 1))
@@ -329,4 +350,3 @@ print('Task Complete ...', file = open(train_log, 'a+'))
 #
 # plt.plot(X, losses, linewidth=1.0)
 # plt.show()
-
