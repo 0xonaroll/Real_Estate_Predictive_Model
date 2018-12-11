@@ -290,7 +290,7 @@ class ConvNet(nn.Module):
 # optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 
-def test(ep, file_log):
+def test(model, ep, file_log):
     print('testing ', model_name, ' @ ', ep)
     print('Evaluating Model ...', file=open(test_log, 'a+'))
     # Test the model
@@ -425,5 +425,5 @@ for ep in range(1, 51):
     model = ConvNet(num_classes).to(device)
     model = model.load_state_dict(torch.load(load_ckpt))
     criterion = nn.MSELoss()
-    test(ep, test_log)
+    test(model, ep, test_log)
 
