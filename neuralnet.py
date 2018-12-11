@@ -24,10 +24,10 @@ batch_size = 50
 num_params = 3
 learning_rate = 0.001
 print_step_train = 1
-print_test_model = 10
+print_test_model = 1
 img_root = '../data/images'
-img_flist_train = '../data/flist/train'
-img_flist_test = '../data/flist/test'
+img_flist_train = '../data/flist/train_test'
+img_flist_test = '../data/flist/test_test'
 ckpt_file = ''
 output_dir = '../data/results'
 train_log = 'train_log.txt'
@@ -100,10 +100,11 @@ def hybrid_flist_reader(flist):
         for line in rf.readlines():
             args = list(line.strip().split())
             impath, label, params = args[0], args[1], args[2:]
-            params_arg = tuple()
-            for p in params:
-                params_arg = params_arg + (p,)
-            imlist.append((impath, float(label), params_arg))
+            # params_arg = tuple()
+            # for p in params:
+            # params_arg = params_arg + (p,)
+            # print('ARG', (impath, float(label), list(params)))
+            imlist.append((impath, float(label), list(params)))
 
     return imlist
 
@@ -140,6 +141,17 @@ class ImageFilelist(data.Dataset):
         return len(self.imlist)
 
 
+def params_transform(params):
+
+    new_params = []
+    for i in range(len(params[0])):
+        new_params.append([])
+    for p_i in range(len(params)):
+        for p_i_i in range(len(params[p_i])):
+            new_params[p_i_i].append(float(params[p_i][p_i_i]))
+
+    return new_params
+
 
 # data_x = np.load('data/pasadena_imgs.npy')
 # data_y = np.load('data/pasadena_prices.npy')
@@ -161,7 +173,7 @@ class ImageFilelist(data.Dataset):
 
 
 train_loader = torch.utils.data.DataLoader(
-         ImageFilelist(root= img_root, flist=img_flist_train,
+         ImageFilelist(root= img_root, flist=img_flist_train, flist_reader=hybrid_flist_reader, mode='hybrid',
              transform=transforms.Compose([
                  transforms.ToTensor(),
                  # transforms.RandomCrop(10)
@@ -170,7 +182,7 @@ train_loader = torch.utils.data.DataLoader(
          num_workers=1, pin_memory=True)
 
 test_loader = torch.utils.data.DataLoader(
-         ImageFilelist(root=img_root, flist=img_flist_test,
+         ImageFilelist(root=img_root, flist=img_flist_test, flist_reader=hybrid_flist_reader, mode='hybrid',
              transform=transforms.Compose([
                  transforms.ToTensor(),
                  # transforms.RandomCrop(10)
@@ -186,9 +198,9 @@ CHANGE HYPERPARAMETERS OF ALL LAYERS
 """
 # Convolutional neural network (two convolutional layers)
 # Note each image is 93 x 140 x 3
-class HybridNet(nn.Module):
+class NeuralNet(nn.Module):
     def __init__(self, num_params, num_out=num_classes, batch_size=None):
-        super(HybridNet, self).__init__()
+        super(NeuralNet, self).__init__()
         self.conv_layer1 = nn.Sequential(
             nn.Conv2d(3, 32, kernel_size=5, stride=1, padding=2),
             nn.BatchNorm2d(32),
@@ -256,9 +268,6 @@ class HybridNet(nn.Module):
 
 
 
-
-
-
 # class ConvNet(nn.Module):
 #     def __init__(self, num_out=num_classes, batch_size=None):
 #         super(ConvNet, self).__init__()
@@ -296,7 +305,7 @@ class HybridNet(nn.Module):
 
 
 print('Initializing Model ...', file = open(train_log, 'a+'))
-model = HybridNet(num_params=num_params, num_classes=num_classes).to(device)
+model = NeuralNet(num_params=num_params, num_out=num_classes).to(device)
 
 
 class RMSELoss(nn.Module):
@@ -318,42 +327,42 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 
 
-def test(ep, file_log):
-    print('Evaluating Model ...', file = open(test_log, 'a+'))
-    # Test the model
-    model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
-    with torch.no_grad():
-        # correct = 0
-        # total = 0
-        total_step = 0
-        total_ct = 0
-        for images, labels, params in test_loader:
-            images = images.to(device).type(torch.FloatTensor)
-            labels = labels.to(device).type(torch.FloatTensor)
-            params = params.to(device).type(torch.FloatTensor)
+# def test(ep, file_log):
+#     print('Evaluating Model ...', file = open(test_log, 'a+'))
+#     # Test the model
+#     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
+#     with torch.no_grad():
+#         # correct = 0
+#         # total = 0
+#         total_step = 0
+#         total_ct = 0
+#         for images, labels, params in test_loader:
+#             images = images.to(device).type(torch.FloatTensor)
+#             labels = labels.to(device).type(torch.FloatTensor)
+#             params = params.to(device).type(torch.FloatTensor)
 
-            """
-            CHANGE TO MSE CALC
-            """
-            outputs = model(images, params)
-            # _, predicted = torch.max(outputs.data, 1)
-            predicted = outputs.data
-            # total += labels.size(0)
-            # correct += (predicted == labels).sum().item()
-            loss = criterion(outputs, labels)
-            # loss.backward()
+#             """
+#             CHANGE TO MSE CALC
+#             """
+#             outputs = model(images, params)
+#             # _, predicted = torch.max(outputs.data, 1)
+#             predicted = outputs.data
+#             # total += labels.size(0)
+#             # correct += (predicted == labels).sum().item()
+#             loss = criterion(outputs, labels)
+#             # loss.backward()
 
-            step_loss = loss.item()
-            step_ct = len(images)
-            total_step += step_loss
-            total_ct += step_ct
+#             step_loss = loss.item()
+#             step_ct = len(images)
+#             total_step += step_loss
+#             total_ct += step_ct
 
 
-            print('Epoch {} Step Loss: {}'.format(str(ep), step_loss), file = open(file_log, 'a+'))
+#             print('Epoch {} Step Loss: {}'.format(str(ep), step_loss), file = open(file_log, 'a+'))
 
-        print('Epoch {} Total Loss on {} images: {}'.format(str(ep), total_ct, total_step), file = open(file_log, 'a+'))
+#         print('Epoch {} Total Loss on {} images: {}'.format(str(ep), total_ct, total_step), file = open(file_log, 'a+'))
 
-    model.train()
+#     model.train()
 
 def test(ep, file_log):
     print('testing')
@@ -368,7 +377,8 @@ def test(ep, file_log):
         for images, labels, params in train_loader:
             images = images.to(device).type(torch.FloatTensor)
             labels = labels.to(device).type(torch.FloatTensor)
-            params = params.to(device).type(torch.FloatTensor)
+            params = params_transform(params)
+            params = torch.FloatTensor(params)
             """
             CHANGE TO MSE CALC
             """
@@ -395,7 +405,8 @@ def test(ep, file_log):
         for images, labels, params in test_loader:
             images = images.to(device).type(torch.FloatTensor)
             labels = labels.to(device).type(torch.FloatTensor)
-            params = params.to(device).type(torch.FloatTensor)
+            params = params_transform(params)
+            params = torch.FloatTensor(params)
             """
             CHANGE TO MSE CALC
             """
@@ -445,7 +456,13 @@ for epoch in range(num_epochs):
         # print('load')
         images = images.to(device).type(torch.FloatTensor)
         labels = labels.to(device).type(torch.FloatTensor)
-        params = params.to(device).type(torch.FloatTensor)
+        # print(type(params), len(params), len(params[0]), params)
+        params = params_transform(params)
+        # print('###################')
+        # print(type(params), len(params), len(params[0]), params)
+        params = torch.FloatTensor(params)
+        # print('###################')
+        # print(type(params), len(params), len(params[0]), params)
 
         # print(images.shape, labels.shape)
 
