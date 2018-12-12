@@ -18,15 +18,15 @@ CHANGE HYPERPARAMETERS
 """
 # Hyper parameters
 
-num_epochs = 100
+num_epochs = 2
 num_classes = 1
 batch_size = 50
 learning_rate = 0.001
 print_step_train = 1
-print_test_model = 5
+print_test_model = 1
 img_root = '../data/images'
 img_flist_train = '../data/flist/train_log'
-img_flist_test = '../data/flist/test_log'
+img_flist_test = '../data/flist/train_log'
 ckpt_file = ''
 output_dir = '../data/results'
 train_log = 'train_log.txt'
@@ -174,26 +174,10 @@ class ConvNet(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
         self.layer3 = nn.Sequential(
-            nn.Conv2d(64, 128, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(128),
-            nn.ReLU())
-        self.layer4 = nn.Sequential(
-            nn.Conv2d(128, 256, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(256),
-            nn.ReLU())
-        self.layer5 = nn.Sequential(
-            nn.Conv2d(256, 256, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(256),
-            nn.ReLU())
-        self.layer6 = nn.Sequential(
-            nn.Conv2d(256, 128, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(128),
-            nn.ReLU())
-        self.layer7 = nn.Sequential(
-            nn.Conv2d(128, 64, kernel_size=5, stride=1, padding=2),
+            nn.Conv2d(64, 64, kernel_size=5, stride=1, padding=2),
             nn.BatchNorm2d(64),
             nn.ReLU())
-        self.layer8 = nn.Sequential(
+        self.layer4 = nn.Sequential(
             nn.Conv2d(64, 32, kernel_size=5, stride=1, padding=2),
             nn.BatchNorm2d(32),
             nn.ReLU(),
@@ -206,10 +190,6 @@ class ConvNet(nn.Module):
         out = self.layer2(out)
         out = self.layer3(out)
         out = self.layer4(out)
-        out = self.layer5(out)
-        out = self.layer6(out)
-        out = self.layer7(out)
-        out = self.layer8(out)
         out = out.reshape(out.size(0), -1)
         out = self.fc(out)
         out = out.view(out.shape[0])
@@ -240,39 +220,13 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 
 def test(ep, file_log):
-    # print('testing')
+    print('testing')
     print('Evaluating Model ...', file = open(test_log, 'a+'))
     # Test the model
     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
     with torch.no_grad():
         # correct = 0
         # total = 0
-        total_step = 0
-        total_ct = 0
-        for images, labels in train_loader:
-            images = images.to(device).type(torch.FloatTensor)
-            labels = labels.to(device).type(torch.FloatTensor)
-            """
-            CHANGE TO MSE CALC
-            """
-            outputs = model(images)
-            # _, predicted = torch.max(outputs.data, 1)
-            predicted = outputs.data
-            # total += labels.size(0)
-            # correct += (predicted == labels).sum().item()
-            loss = criterion(outputs, labels)
-            # loss.backward()
-
-            step_loss = loss.item()
-            step_ct = len(images)
-            total_step += step_loss
-            total_ct += step_ct
-
-
-            print('Train Set Epoch {} Step Loss: {}'.format(str(ep), step_loss), file = open(file_log, 'a+'))
-
-        print('Train Set Epoch {} Total Loss on {} images: {}'.format(str(ep), total_ct, total_step), file = open(file_log, 'a+'))
-
         total_step = 0
         total_ct = 0
         for images, labels in test_loader:
@@ -295,23 +249,22 @@ def test(ep, file_log):
             total_ct += step_ct
 
 
-            print('Test Set Epoch {} Step Loss: {}'.format(str(ep), step_loss), file = open(file_log, 'a+'))
+            print('Epoch {} Step Loss: {}'.format(str(ep), step_loss), file = open(file_log, 'a+'))
 
-        print('Test Set Epoch {} Total Loss on {} images: {}'.format(str(ep), total_ct, total_step), file = open(file_log, 'a+'))
+        print('Epoch {} Total Loss on {} images: {}'.format(str(ep), total_ct, total_step), file = open(file_log, 'a+'))
+    print('done testing')
     model.train()
 
-
-
 def save(ep, file_log):
+    print('saving')
     print('Epoch {} Saving Model ...'.format(ep), file = open(file_log, 'a+'))
-
     # Save the model checkpoint
     if len(ckpt_file) > 0:
         torch.save(model.state_dict(), '{}/{}_model_{}.ckpt'.format(output_dir, ckpt_file, str(ep)))
     else:
         torch.save(model.state_dict(), '{}/{}_model_{}.ckpt'.format(output_dir, ckpt_file, str(ep)))
-
-
+    print('done saving')
+    
 
 
 print('Training Model ...', file = open(train_log, 'a+'))
@@ -322,6 +275,8 @@ step_ct = 0
 losses = []
 for epoch in range(num_epochs):
     for i, (images, labels) in enumerate(train_loader):
+
+        print(num_epochs, len(train_loader), epoch, i)
 
         # print("STEP INFO: ", epoch, i, images.shape, labels.shape, len(train_loader))
 
@@ -370,6 +325,7 @@ for epoch in range(num_epochs):
     # print('Test Accuracy of the model on the 10000 test images: {} %'.format(100 * correct / total))
 
 
+
 print('Task Complete ...', file = open(train_log, 'a+'))
 #
 # X = list(range(1, len(losses) + 1))
@@ -377,3 +333,4 @@ print('Task Complete ...', file = open(train_log, 'a+'))
 #
 # plt.plot(X, losses, linewidth=1.0)
 # plt.show()
+

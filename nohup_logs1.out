@@ -1,0 +1,3 @@
+nohup: ignoring input
+./run_logs1.sh: line 3: 19132 Killed                  python3 -u plotter.py convnet_log1 &> convnet_log1_logs.out
+./run_logs1.sh: line 5: 29793 Killed                  python3 -u plotter.py convnet_bucket1 &> bucket1_logs.out
