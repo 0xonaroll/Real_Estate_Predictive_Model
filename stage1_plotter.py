@@ -1,13 +1,18 @@
 import matplotlib.pyplot as plt
 import sys
+import os
+
 
 f = sys.argv[1]
-fpath = '../data/results/' + f
+name = sys.argv[2]
+
+fpath = '/Users/Anurag/Downloads/' + f
+
+# print(os.listdir(fpath))
 
 ep_train, ep_test, val_train, val_test = [], [], [], []
 
 with open(fpath, 'r') as file:
-if model_name == 'convnet_median_greyscale1':
     for line in file:
         if 'images' in line:
             e = list(line.split())
@@ -24,4 +29,5 @@ plt.plot(ep_train, val_train, color='r', linewidth=1.0)
 plt.plot(ep_test, val_test, color='b', linewidth=1.0)
 plt.xlabel('Iter.')
 plt.ylabel('Loss')
-
+plt.title(name)
+plt.savefig('stage1_plots/' + name + '_loss_plot')
